@@ -8,12 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -34,6 +36,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private AuthenticationManager manager;
 
+	@Bean
+	@Profile("standalone")
+	public WebSecurityCustomizer webSecurityCustomizer() {
+		return (web) -> web.ignoring().antMatchers("/h2-console/**");
+	}
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
@@ -51,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 						.defaultSuccessUrl("/admin").loginPage("/signin")
 						.userInfoEndpoint(endpoint -> endpoint.userService(this.userService)))
 				.logout(logout -> logout.logoutUrl("/signout").logoutSuccessUrl("/"));
+		http.headers().frameOptions().sameOrigin();
 	}
 
 	@Bean

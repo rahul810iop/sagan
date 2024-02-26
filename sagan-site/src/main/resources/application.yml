@@ -23,7 +23,9 @@ spring:
             # admin access.
             scope:
              - 'read:org'
-
+  h2:
+    console:
+      enabled: true
 management:
   endpoint:
     health:

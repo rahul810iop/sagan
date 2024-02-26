@@ -57,9 +57,9 @@ ALTER TABLE project_sample_list RENAME TO project_sample;
 ALTER TABLE project_sample DROP PRIMARY KEY;
 ALTER TABLE project_sample ADD COLUMN id INT AUTO_INCREMENT PRIMARY KEY;
 ALTER TABLE project_sample RENAME COLUMN display_order TO sort_order;
-ALTER TABLE project_sample MODIFY title VARCHAR(255) NOT NULL;
-ALTER TABLE project_sample MODIFY description VARCHAR(255) NOT NULL;
-ALTER TABLE project_sample MODIFY url VARCHAR(255) NOT NULL;
+ALTER TABLE project_sample ALTER title VARCHAR(255) NOT NULL;
+ALTER TABLE project_sample ALTER description VARCHAR(255) NOT NULL;
+ALTER TABLE project_sample ALTER url VARCHAR(255) NOT NULL;
 
 
 --
